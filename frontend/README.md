@@ -1,70 +1,154 @@
-# Getting Started with Create React App
+# Frontend Application for E-commerce
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend application for an e-commerce website built with React. It includes a navigation bar, routes for different shop categories, product details, cart management, and user authentication pages. The application uses React Router for client-side routing.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### Prerequisites
 
-### `npm start`
+Ensure you have the following installed:
+- Node.js
+- npm or yarn
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Clone the repository.
+2. Navigate to the `frontend` project directory.
+3. Install the dependencies using npm or yarn:
 
-### `npm test`
+   ```bash
+   npm install
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   or
 
-### `npm run build`
+   ```bash
+   yarn install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Running the Application
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Start the development server using the following command:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+or
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+yarn start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application will run on `http://localhost:3000` by default.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Folder Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- `src/App.js`: Main application file.
+- `src/App.css`: Global styles for the application.
+- `src/Components/Navbar/Navbar.js`: Navbar component.
+- `src/Components/Footer/Footer.js`: Footer component.
+- `src/Components/Assets/`: Directory for images and other assets.
+- `src/Pages/Shop.js`: Shop page component.
+- `src/Pages/ShopCategory.js`: Shop category page component.
+- `src/Pages/Product.js`: Product details page component.
+- `src/Pages/Cart.js`: Cart page component.
+- `src/Pages/LoginSignup.js`: Login and Signup page component.
 
-## Learn More
+## Components and Pages
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Components
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Navbar**: Navigation bar displayed at the top of the page.
 
-### Code Splitting
+  ```javascript
+  import { Navbar } from './Components/Navbar/Navbar';
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Footer**: Footer displayed at the bottom of the page.
 
-### Analyzing the Bundle Size
+  ```javascript
+  import { Footer } from './Components/Footer/Footer';
+  ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Pages
 
-### Making a Progressive Web App
+- **Shop**: Main shop page displaying all products.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  ```javascript
+  import { Shop } from './Pages/Shop';
+  ```
 
-### Advanced Configuration
+- **ShopCategory**: Page displaying products filtered by category. Accepts `banner` and `category` as props.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+  ```javascript
+  import { ShopCategory } from './Pages/ShopCategory';
+  ```
 
-### Deployment
+- **Product**: Product details page. Displays detailed information about a specific product.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+  ```javascript
+  import { Product } from './Pages/Product';
+  ```
 
-### `npm run build` fails to minify
+- **Cart**: Cart page. Displays products added to the user's cart.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  ```javascript
+  import { Cart } from './Pages/Cart';
+  ```
+
+- **LoginSignup**: Page for user login and signup.
+
+  ```javascript
+  import { LoginSignup } from './Pages/LoginSignup';
+  ```
+
+## Routing
+
+React Router is used for client-side routing. The routes are defined in `src/App.js` as follows:
+
+```javascript
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+function App() {
+  return (
+    <div>
+      <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Shop/>}/>
+        <Route path='/men' element={<ShopCategory banner={men_banner} category='men'/>}/>
+        <Route path='/women' element={<ShopCategory banner={women_banner} category='women'/>}/>
+        <Route path='/kid' element={<ShopCategory banner={kids_banner} category='kid'/>}/>
+        <Route path='/product' element={<Product/>}>
+          <Route path=':productId' element={<Product/>}/>
+        </Route>
+        <Route path='/cart' element={<Cart/>}/>
+        <Route path='/login' element={<LoginSignup/>}/>
+      </Routes>
+      <Footer/>
+      </BrowserRouter>
+    </div>
+  );
+}
+```
+
+## Assets
+
+Banner images for different categories are stored in the `src/Components/Assets/` directory:
+
+- `banner_mens.png`
+- `banner_women.png`
+- `banner_kids.png`
+
+These images are imported and used in the `ShopCategory` component:
+
+```javascript
+import men_banner from './Components/Assets/banner_mens.png';
+import women_banner from './Components/Assets/banner_women.png';
+import kids_banner from './Components/Assets/banner_kids.png';
+```
+
+## License
+
+This project is licensed under the MIT License.
