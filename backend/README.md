@@ -1,4 +1,4 @@
-# Backend Service for E-commerce Application
+# Backend Service for Zephyr (E-commerce) Application
 
 This backend service is built with Node.js and Express.js, providing APIs for managing products, user authentication, and cart functionalities for an e-commerce application. It also includes image uploading and storage using Multer.
 
