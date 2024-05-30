@@ -1,4 +1,4 @@
-# Frontend Application for E-commerce
+# Frontend Application for Zephyr
 
 This is the frontend application for an e-commerce website built with React. It includes a navigation bar, routes for different shop categories, product details, cart management, and user authentication pages. The application uses React Router for client-side routing.
 
