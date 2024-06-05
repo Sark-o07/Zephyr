@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const cors = require('cors');
+const https = require('https')
 
 const port = 4000;
 
@@ -235,6 +236,17 @@ app.get('/womenproducts', async (req, res) => {
     res.send(popular_in_women);
 })
 
+// creating endpoint for related-products for product display page
+
+app.post('/relatedproducts', async (req, res) => {
+    let category = req.body.category;
+    let products_of_category = await Product.find({category: category});
+    let related_products = products_of_category.slice(0, 4);
+    console.log(related_products);
+    res.send(related_products);
+})
+
+
 // creating middleware to fetch user
 const fetchUser = async (req, res, next) => {
     const token = req.header('auth-token');
@@ -284,6 +296,52 @@ app.post('/getcart', fetchUser, async (req, res) => {
     let userData = await Users.findOne({_id: req.user.id});
     res.json(userData.cartData);
 });
+
+// creating endpoint to integrate paystack
+app.post('/checkout', fetchUser, async (req, res) => {
+    console.log(req.user)
+    let userData = await Users.findOne({_id: req.user.id})
+    console.log("amount_type", req.body.total_amount)
+    const params = JSON.stringify({
+        "email": userData.email,
+        "amount": req.body.total_amount * 100
+    })
+
+    const options = {
+        hostname: 'api.paystack.co',
+        port: 443,
+        path: '/transaction/initialize',
+        method: 'POST',
+        headers: {
+            Authorization: 'Bearer sk_test_906678dbc66abb1fb6ad97bb6830a7cb59f762e3',
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const reqPaystack = https.request(options, resPaystack => {
+        let data = ''
+
+        resPaystack.on('data', (chunk) => {
+            data += chunk
+        });
+
+        resPaystack.on('end', () => {
+            console.log(JSON.parse(data))
+            data_obj = JSON.parse(data)
+            console.log(data_obj.data.authorization_url)
+            res.send(data_obj)
+        })
+    })
+
+    reqPaystack.on('error', error => {
+        console.error(error)
+        res.status(500).send({ error: 'Failed to initialize transaction' })
+    })
+
+    reqPaystack.write(params)
+    reqPaystack.end()
+});
+
 
 app.listen(port, (error) => {
     if(!error) {
