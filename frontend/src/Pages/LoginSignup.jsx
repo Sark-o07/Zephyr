@@ -41,7 +41,7 @@ export const LoginSignup = () => {
         localStorage.setItem('auth-token', data.token);
         setIsAuthenticated(true);
         console.log(cartItems, "if user successfully signs up");
-        navigate('/');
+        navigate('/men');
       } else {
         alert(data.error);
       }

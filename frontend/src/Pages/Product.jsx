@@ -8,14 +8,17 @@ import { ShopContext } from '../Context/ShopContext';
 import './CSS/Product.css'
 export const Product = () => {
   const { allProducts } = useContext(ShopContext);
+  console.log("allproducts", allProducts);
   const { productId } = useParams();
+  console.log("productId", productId);
   const product = allProducts.find((e)=> e.id === Number(productId));
+  console.log(product)
   return (
     <div>
         <Breadcrumbs product={product} />
         <ProductDisplay product={product}/>
         <DescriptionBox/>
-        <RelatedProducts/>
+        <RelatedProducts category={product.category}/>
     </div>
   )
 }

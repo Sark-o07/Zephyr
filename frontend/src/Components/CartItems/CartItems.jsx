@@ -5,7 +5,34 @@ import remove_icon from '../Assets/cart_cross_icon.png'
 
 export const CartItems = () => {
     const { allProducts , cartItems, removeFromCart, getTotalCartAmount } = useContext(ShopContext);
+
     console.log(cartItems);
+
+    function checkout () {
+        if (localStorage.getItem('auth-token')) {
+            const total_amount = getTotalCartAmount();
+            fetch('http://localhost:4000/checkout', {
+            method: 'POST',
+            headers: {
+                Accept: "application/json",
+                'auth-token': `${localStorage.getItem('auth-token')}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"total_amount": total_amount})
+        })
+        .then((res)=> res.json())
+        .then((data) => {
+            const authorizationUrl = data.data.authorization_url;
+            console.log(data);
+            window.location.href = authorizationUrl;
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        
+        }
+        
+    }
   return (
     <div className='cartitems'>
         <div className="cartitems-format-main">
@@ -53,7 +80,7 @@ export const CartItems = () => {
                         <h3>${getTotalCartAmount()}</h3>
                     </div>
                 </div>
-                <button>PROCEED TO CHECKOUT</button> 
+                <button onClick={()=>{checkout()}} >PROCEED TO CHECKOUT</button> 
             </div>
             <div className="cartitems-promocode">
                 <p>If you have a promo code, Enter it here</p>
